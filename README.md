@@ -2,10 +2,10 @@
 <div align="center">
 
 <!-- Layer 1: aurora wave header -->
-<img src="https://capsule-render.vercel.app/api?type=venom&color=gradient&customColorList=12,6,20,24&height=120&section=header&animation=twinkling" width="100%" alt="" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12,6,20,24&height=100&section=header" width="100%" alt="" />
 
 <!-- Layer 2: custom animated SVG banner (assets/banner.svg) -->
-<img src="./assets/banner.svg" width="100%" alt="LocaLoom - Connect. Discover. Experience." />
+<img src="./assets/banner-v2.svg" width="100%" alt="LocaLoom - Connect. Discover. Experience." />
 
 <!-- Layer 3: typing animation -->
 <a href="https://localoom.netlify.app/">
