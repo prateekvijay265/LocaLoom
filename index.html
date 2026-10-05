@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocaLoom - Connect. Discover. Experience.</title>
+    
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet CSS for maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="nav-brand">
+                    <h1 class="brand-title"><a href="index.html" style="color: #f97316;">LocaLoom</a></h1>
+                    <span class="brand-subtitle">Your neighborhood awaits</span>
+                </div>
+                
+                <div class="nav-links">
+                    <button class="nav-link" data-page="home">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </button>
+                    <button class="nav-link" data-page="create">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Create Event</span>
+                    </button>
+                    <button class="nav-link" data-page="profile">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </button>
+                    <button class="nav-link" data-page="login">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Login</span>
+                    </button>
+                </div>
+                
+                <button class="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-menu hidden">
+        <div class="mobile-menu-content">
+            <button class="nav-link mobile" data-page="home">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </button>
+            <button class="nav-link mobile" data-page="create">
+                <i class="fas fa-plus-circle"></i>
+                <span>Create Event</span>
+            </button>
+            <button class="nav-link mobile" data-page="profile">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </button>
+            <button class="nav-link mobile" data-page="login">
+                <i class="fas fa-sign-in-alt"></i>
+                <span>Login</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="main-content">
+        
+        <!-- Home Page -->
+        <div id="home-page" class="page active">
+            <!-- Enhanced Hero Section -->
+            <section class="hero">
+                <div class="hero-background"></div>
+                <div class="container">
+                    <div class="hero-content">
+                        <h1 class="hero-title">Discover Amazing Events in Your Neighbourhood</h1>
+                        <p class="hero-description">Connect with your local Delhi community through exciting events, workshops, and activities happening right in your neighborhood.</p>
+                        <div class="hero-actions">
+                            <button class="btn btn--primary btn--lg" data-page="create">Create Event</button>
+                            <button class="btn btn--outline btn--lg" onclick="scrollToEvents()">Explore Events</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Category Showcase Section -->
+            <section class="category-showcase">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">Explore Categories</h2>
+                        <p class="section-subtitle">Find the perfect events that match your interests</p>
+                    </div>
+                    
+                    <div class="categories-grid" id="categories-grid">
+                        <!-- Categories will be populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Search and Filters -->
+            <section class="search-section" id="events-section">
+                <div class="container">
+                    <div class="search-container">
+                        <div class="search-input-container">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" id="search-input" class="search-input" placeholder="Search events...">
+                        </div>
+                        
+                        <div class="filter-container">
+                            <button class="filter-btn active" data-category="all">All Events</button>
+                            <button class="filter-btn" data-category="Heritage Walk"> Heritage</button>
+                            <button class="filter-btn" data-category="Food Walk"> Food</button>
+                            <button class="filter-btn" data-category="Fitness"> Fitness</button>
+                            <button class="filter-btn" data-category="Learn"> Learn</button>
+                            <button class="filter-btn" data-category="Volunteer"> Volunteer</button>
+                            <button class="filter-btn" data-category="Social"> Social</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Events Grid and Map Layout -->
+            <section class="events-section">
+                <div class="container">
+                    <div class="events-layout">
+                        <!-- Events Grid -->
+                        <div class="events-container">
+                            <h2 class="section-title">Upcoming Events</h2>
+                            <div id="events-list" class="events-grid">
+                                <!-- Events will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <!-- Interactive Map -->
+                        <div class="map-container">
+                            <div class="map-header">
+                                <h3 class="map-title">Event Locations</h3>
+                                <p class="map-subtitle">Find events near you</p>
+                            </div>
+                            <div id="map" class="map"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Event Creation Page -->
+        <div id="create-page" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">Create New Event</h1>
+                    <p class="page-description">Share your event with the community and bring people together.</p>
+                </div>
+                
+                <div class="form-container">
+                    <form id="create-event-form" class="event-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="event-title">Event Title *</label>
+                                <input type="text" id="event-title" class="form-control" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="event-description">Description *</label>
+                            <textarea id="event-description" class="form-control" rows="4" required></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="event-category">Category *</label>
+                                <select id="event-category" class="form-control" required>
+                                    <option value="">Select a category</option>
+                                    <option value="Heritage Walk">Heritage Walk</option>
+                                    <option value="Food Walk">Food Walk</option>
+                                    <option value="Fitness">Fitness</option>
+                                    <option value="Learn">Learn</option>
+                                    <option value="Volunteer">Volunteer</option>
+                                    <option value="Social">Social</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="event-organizer">Organizer *</label>
+                                <input type="text" id="event-organizer" class="form-control" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="event-date">Date *</label>
+                                <input type="date" id="event-date" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="event-time">Time *</label>
+                                <input type="time" id="event-time" class="form-control" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="event-location">Location *</label>
+                            <input type="text" id="event-location" class="form-control" placeholder="Enter event location" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="event-price">Price (₹)</label>
+                                <input type="number" id="event-price" class="form-control" min="0" value="0">
+                                <small class="form-help">Enter 0 for free events</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="max-attendees">Max Attendees</label>
+                                <input type="number" id="max-attendees" class="form-control" min="1" value="20">
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn--secondary" data-page="home">Cancel</button>
+                            <button type="submit" class="btn btn--primary">Create Event</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Page -->
+        <div id="login-page" class="page">
+            <div class="container">
+                <div class="auth-container">
+                    <div class="auth-card">
+                        <div class="auth-header">
+                            <h1 class="auth-title">Welcome Back</h1>
+                            <p class="auth-description">Sign in to your LocaLoom account</p>
+                        </div>
+                        
+                        <form id="login-form" class="auth-form">
+                            <div class="form-group">
+                                <label class="form-label" for="login-email">Email Address</label>
+                                <input type="email" id="login-email" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="login-password">Password</label>
+                                <input type="password" id="login-password" class="form-control" required>
+                            </div>
+                            
+                            <button type="submit" class="btn btn--primary btn--full-width">Sign In</button>
+                        </form>
+                        
+                        <div class="auth-footer">
+                            <p>Don't have an account? <button class="auth-link" id="switch-to-register">Sign up</button></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Register Page -->
+        <div id="register-page" class="page">
+            <div class="container">
+                <div class="auth-container">
+                    <div class="auth-card">
+                        <div class="auth-header">
+                            <h1 class="auth-title">Join LocaLoom</h1>
+                            <p class="auth-description">Create your account and start discovering events</p>
+                        </div>
+                        
+                        <form id="register-form" class="auth-form">
+                            <div class="form-group">
+                                <label class="form-label" for="register-name">Full Name</label>
+                                <input type="text" id="register-name" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="register-email">Email Address</label>
+                                <input type="email" id="register-email" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="register-password">Password</label>
+                                <input type="password" id="register-password" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="register-location">Location (Delhi)</label>
+                                <input type="text" id="register-location" class="form-control" placeholder="e.g., Connaught Place" required>
+                            </div>
+                            
+                            <button type="submit" class="btn btn--primary btn--full-width">Create Account</button>
+                        </form>
+                        
+                        <div class="auth-footer">
+                            <p>Already have an account? <button class="auth-link" id="switch-to-login">Sign in</button></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Page -->
+        <div id="profile-page" class="page">
+            <div class="container">
+                <div class="profile-container">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="profile-info">
+                            <h1 class="profile-name">Rahul Sharma</h1>
+                            <p class="profile-email">rahul@example.com</p>
+                            <p class="profile-location">📍 Connaught Place, Delhi</p>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-stats">
+                        <div class="stat-card">
+                            <h3 class="stat-number">3</h3>
+                            <p class="stat-label">Events Joined</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 class="stat-number">2</h3>
+                            <p class="stat-label">Events Created</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 class="stat-number">5</h3>
+                            <p class="stat-label">Events Attended</p>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-actions">
+                        <button class="btn btn--secondary" data-page="home">Back to Events</button>
+                        <button class="btn btn--primary" data-page="create">Create New Event</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Detail Modal -->
+        <div id="event-modal" class="modal hidden">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modal-event-title"></h2>
+                    <button class="modal-close" id="close-modal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="event-detail-content">
+                        <div class="event-detail-image" id="modal-event-image">
+                            <div class="event-image-placeholder">
+                                <i class="fas fa-image"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="event-detail-info">
+                            <div class="event-meta">
+                                <span class="event-category" id="modal-event-category"></span>
+                                <span class="event-price" id="modal-event-price"></span>
+                            </div>
+                            
+                            <p class="event-description" id="modal-event-description"></p>
+                            
+                            <div class="event-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-calendar"></i>
+                                    <span id="modal-event-date"></span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span id="modal-event-time"></span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span id="modal-event-location"></span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-user"></i>
+                                    <span id="modal-event-organizer"></span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-users"></i>
+                                    <span id="modal-event-attendees"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="btn btn--secondary" id="close-modal-btn">Close</button>
+                    <button class="btn btn--primary" id="join-event-btn">Join Event</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Success/Error Messages -->
+    <div id="toast" class="toast hidden">
+        <div class="toast-content">
+            <i class="toast-icon"></i>
+            <span class="toast-message"></span>
+        </div>
+    </div>
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- Application JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
